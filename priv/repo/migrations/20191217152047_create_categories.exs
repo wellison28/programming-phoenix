@@ -3,7 +3,7 @@ defmodule Rumbl.Repo.Migrations.CreateCategories do
 
   def change do
     create table(:categories) do
-      add :name, :string, null: fasle
+      add :name, :string, null: false
 
       timestamps()
     end
