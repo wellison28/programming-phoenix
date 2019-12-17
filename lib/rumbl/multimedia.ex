@@ -9,6 +9,18 @@ defmodule Rumbl.Multimedia do
     Repo.all(Video)
   end
 
+  alias Rumbl.Multimedia.Category
+
+  def create_category!(name) do
+    Repo.insert!(%Category{name: name}, on_conflict: :nothing)
+  end
+
+  def list_alphabetical_categories do
+    Category
+    |> Category.alphabetical()
+    |> Repo.all()
+  end
+
   def list_user_videos(%Accounts.User{} = user) do
     Video
     |> user_videos_query(user)
@@ -21,11 +33,11 @@ defmodule Rumbl.Multimedia do
     |> Repo.get!(id)
   end
 
+  def get_video!(id), do: Repo.get!(Video, id)
+
   defp user_videos_query(query, %Accounts.User{id: user_id}) do
     from(v in query, where: v.user_id == ^user_id)
   end
-
-  def get_video!(id), do: Repo.get!(Video, id)
 
   def update_video(%Video{} = video, attrs) do
     video
